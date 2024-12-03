@@ -43,6 +43,7 @@ ALLWIFIBOARDS:= \
 	elecom_wrc-x3000gs2 \
 	glinet_gl-ax1800 \
 	glinet_gl-axt1800 \
+	glinet_gl-x2000 \
 	glinet_gl-b3000 \
 	ignitenet_ss-w2-ac2600 \
 	iodata_wn-dax3000gr \
@@ -221,6 +222,7 @@ $(eval $(call generate-ipq-wifi-package,edimax_cax1800,Edimax CAX1800))
 $(eval $(call generate-ipq-wifi-package,elecom_wrc-x3000gs2,ELECOM WRC-X3000GS2))
 $(eval $(call generate-ipq-wifi-package,glinet_gl-ax1800,GL.iNet GL-AX1800))
 $(eval $(call generate-ipq-wifi-package,glinet_gl-axt1800,GL.iNet GL-AXT1800))
+$(eval $(call generate-ipq-wifi-package,glinet_gl-x2000,GL.iNet GL-X2000))
 $(eval $(call generate-ipq-wifi-package,glinet_gl-b3000,GL.iNet GL-B3000))
 $(eval $(call generate-ipq-wifi-package,ignitenet_ss-w2-ac2600,Ignitenet SS-W2-AC2600))
 $(eval $(call generate-ipq-wifi-package,iodata_wn-dax3000gr,I-O DATA WN-DAX3000GR))
