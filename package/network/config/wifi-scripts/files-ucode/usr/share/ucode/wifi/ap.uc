@@ -57,9 +57,9 @@ function iface_setup(config) {
 		'disassoc_low_ack', 'skip_inactivity_poll', 'ignore_broadcast_ssid', 'uapsd_advertisement_enabled',
 		'utf8_ssid', 'multi_ap', 'multi_ap_vlanid', 'multi_ap_profile', 'tdls_prohibit', 'bridge',
 		'wds_sta', 'wds_bridge', 'snoop_iface', 'vendor_elements', 'nas_identifier', 'radius_acct_interim_interval',
-		'ocv', 'multicast_to_unicast', 'preamble', 'proxy_arp', 'per_sta_vif', 'mbo',
+		'ocv', 'beacon_prot', 'spp_amsdu', 'multicast_to_unicast', 'preamble', 'proxy_arp', 'per_sta_vif', 'mbo',
 		'bss_transition', 'wnm_sleep_mode', 'wnm_sleep_mode_no_keys', 'qos_map_set', 'max_listen_int',
-		'dtim_period', 'wmm_enabled', 'start_disabled', 'na_mcast_to_ucast',
+		'dtim_period', 'wmm_enabled', 'start_disabled', 'na_mcast_to_ucast', 'no_probe_resp_if_max_sta',
 	]);
 }
 
@@ -90,7 +90,8 @@ function iface_auth_type(config) {
 	}
 
 	if (config.auth_type in [ 'psk-sae', 'eap-eap2' ]) {
-		config.ieee80211w = 1;
+		if (!config.ieee80211w)
+			config.ieee80211w = 1;
 		if (config.rsn_override)
 			config.rsn_override_mfp = 2;
 		config.sae_require_mfp = 1;
@@ -166,7 +167,7 @@ function iface_auth_type(config) {
 
 		if (config.radius_das_client && config.radius_das_secret) {
 			set_default(config, 'radius_das_port', 3799);
-			set_default(config, 'radius_das_client', `${config.radius_das_client} ${config.radius_das_secret}`);
+			config.radius_das_client = config.radius_das_client + ' ' + config.radius_das_secret;
 		}
 
 		set_default(config, 'eapol_version', config.wpa & 1);
@@ -288,7 +289,7 @@ function iface_vlan(interface, config, vlans) {
 		if (vlan.config.name && vlan.config.vid) {
 			let ifname = `${config.ifname}-${vlan.config.name}`;
 			file.write(`${vlan.config.vid} ${ifname}\n`);
-			netifd.set_vlan(interface, k, ifname);
+			netifd.set_vlan(interface, ifname, k);
 		}
 	file.close();
 
@@ -307,18 +308,17 @@ function iface_vlan(interface, config, vlans) {
 }
 
 function iface_wpa_stations(config, stas) {
-	if (!length(stas))
-		return;
-
 	let path = `/var/run/hostapd-${config.ifname}.psk`;
 
 	let file = fs.open(path, 'w');
 	for (let k, sta in stas)
 		if (sta.config.mac && sta.config.key) {
-			let station = `${sta.config.mac} ${sta.config.key}\n`;
-			if (sta.config.vid)
-				station = `vlanid=${sta.config.vid} ` + station;
-			file.write(station);
+			for (let mac in sta.config.mac) {
+				let station = `${mac} ${sta.config.key}\n`;
+				if (sta.config.vid)
+					station = `vlanid=${sta.config.vid} ` + station;
+				file.write(station);
+			}
 		}
 	file.close();
 
@@ -326,23 +326,21 @@ function iface_wpa_stations(config, stas) {
 }
 
 function iface_sae_stations(config, stas) {
-	if (!length(stas))
-		return;
-
 	let path = `/var/run/hostapd-${config.ifname}.sae`;
 
 	let file = fs.open(path, 'w');
 	for (let k, sta in stas)
 		if (sta.config.mac && sta.config.key) {
-			let mac = sta.config.mac;
-			if (mac == '00:00:00:00:00:00')
-				mac = 'ff:ff:ff:ff:ff:ff';
+			for (let mac in sta.config.mac) {
+				if (mac == '00:00:00:00:00:00')
+					mac = 'ff:ff:ff:ff:ff:ff';
 
-			let station = `${sta.config.key}|mac=${mac}`;
-			if (sta.config.vid)
-				station = station + `|vlanid=${sta.config.vid}`;
-			station = station + '\n';
-			file.write(station);
+				let station = `${sta.config.key}|mac=${mac}`;
+				if (sta.config.vid)
+					station = station + `|vlanid=${sta.config.vid}`;
+				station = station + '\n';
+				file.write(station);
+			}
 		}
 	file.close();
 
@@ -366,7 +364,7 @@ function iface_roaming(config) {
 	if (!config.ieee80211r || config.wpa < 2)
 		return;
 
-	set_default(config, 'mobility_domain', substr(md5(config.ssid), 0, 4));
+	set_default(config, 'mobility_domain', substr(md5(config.ssid + '\n'), 0, 4));
 	set_default(config, 'ft_psk_generate_local', config.auth_type == 'psk');
 	set_default(config, 'ft_iface', config.network_ifname);
 
