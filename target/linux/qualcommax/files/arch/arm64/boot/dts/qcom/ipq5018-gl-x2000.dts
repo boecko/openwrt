@@ -2,15 +2,15 @@
 
 #include "ipq5018.dtsi"
 #include "ipq5018-ess.dtsi"
+#include "ipq5018-qcn6122.dtsi"
 
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
+#include <dt-bindings/leds/common.h>
 
 / {
 	model = "GL.iNet X2000, Inc. IPQ5018/AP-MP03.5-C1";
 	compatible = "glinet,gl-x2000", "qcom,ipq5018-ap-mp03.5-c1", "qcom,ipq5018-mp03.5", "qcom,ipq5018";
-
-	interrupt-parent = <&intc>;
 
 	aliases {
 		serial0 = &blsp1_uart1;
@@ -18,7 +18,6 @@
 		ethernet0 = &dp1;
 		ethernet1 = &dp2;
 		label-mac-device = &dp2;
-		
 		led-boot = &led_system_power;
 		led-failsafe = &led_status_internet;
 		led-running = &led_status_internet;
@@ -30,53 +29,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-	gl-hw {
-                compatible = "gl-hw-info";
-                model = "x2000";
-                radio = "radio0";
-                wan = "eth0";
-                lan = "eth1";
-                dfs;
-                sim = "dual";
-                usb-port = "1-1.3";
-                build-in-modem = "2-1";
-                reset-button = "gpio-27";
-                flash_size = <128>;
-                mcu = "/dev/ttyMSM1,9600";
-                fan = "hwmon0 cooling_device0";
-                temperature = "/sys/devices/virtual/thermal/thermal_zone0/temp";
-                fan_pwm_max = "145";
-                factory_data {
-                        device_mac = "0:ART", "0x6";
-                        device_ddns = "0:ART", "0x10";
-                        device_sn_bak = "0:ART", "0x20";
-                        device_sn = "0:ART", "0x30";
-                        country_code = "0:ART", "0x88";
-                        device_cert = "0:ART", "0x50000";
-                };
-    };
-
-	gl_fan {
-			compatible = "gl-fan";
-			interrupt-parent = <&tlmm>;
-			interrupts = <26 IRQ_TYPE_EDGE_RISING>;
-	};
-
-	gpio-export {
-			compatible = "gpio-export";
-			cellular_power {
-					gpio-export,name = "cellular_power";
-					gpio-export,output = <1>;
-					gpios = <&tlmm 38 GPIO_ACTIVE_HIGH>;
-			};
-
-			cellular_reset {
-					gpio-export,name = "cellular_reset";
-					gpio-export,output = <0>;
-					gpios = <&tlmm 22 GPIO_ACTIVE_HIGH>;
-			};
-
-	};
 
 	leds {
 		compatible = "gpio-leds";
@@ -238,7 +190,7 @@
 	status = "okay";
 
 	phy-mode = "sgmii";
-	nvmem-cells = <&macaddr_dp2>;
+	nvmem-cells = <&macaddr_dp2 0>;
 	nvmem-cell-names = "mac-address";
 	
 	fixed-link {
@@ -745,7 +697,7 @@
 	};
 };
 
-&wifi0 {
+&wifi {
 	// IPQ5018
 	qcom,rproc = <&q6_wcss_pd1>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
@@ -775,5 +727,3 @@
 
 	status = "okay";
 };
-
-
