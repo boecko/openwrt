@@ -36,49 +36,63 @@
 		pinctrl-names = "default";
 
         	led_system_power: led_system_power {
-            	label = "led_system_power";
+				function = LED_FUNCTION_POWER;
+				color = <LED_COLOR_ID_GREEN>;
 				gpios = <&tlmm 28 GPIO_ACTIVE_HIGH>;
 				default-state = "on";
         	};
 
         	led_status_internet: led_status_internet {
-            	label = "led_status_internet";
+				function = LED_FUNCTION_STATUS;
+				color = <LED_COLOR_ID_GREEN>;
 				gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
         	};
 
 			led_wifi_2g {
-				label = "wifi:2g";
+				function = LED_FUNCTION_WLAN_2GHZ;
+				color = <LED_COLOR_ID_GREEN>;
+				function-enumerator = <2>;
 				gpios = <&tlmm 1 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
 			};
 
 			led_wifi_5g {
-				label = "wifi:5g";
+				function = LED_FUNCTION_WLAN_5GHZ;
+				color = <LED_COLOR_ID_GREEN>;
+				function-enumerator = <5>;
 				gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
 			};
 
 			led_5g_signal1 {
-				label = "5G:signal:led1";
+				function = LED_FUNCTION_INDICATOR;
+				color = <LED_COLOR_ID_GREEN>;
+				function-enumerator = <1>;
 				gpios = <&tlmm 44 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
 			};
 
 			led_5g_signal2 {
-				label = "5G:signal:led2";
+				function = LED_FUNCTION_INDICATOR;
+				color = <LED_COLOR_ID_GREEN>;
+				function-enumerator = <2>;
 				gpios = <&tlmm 24 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
 			};
 
 			led_5g_signal3 {
-				label = "5G:signal:led3";
+				function = LED_FUNCTION_INDICATOR;
+				color = <LED_COLOR_ID_GREEN>;
+				function-enumerator = <3>;
 				gpios = <&tlmm 17 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
 			};
 
 			led_5g_signal4 {
-				label = "5G:signal:led4";
+				function = LED_FUNCTION_INDICATOR;
+				color = <LED_COLOR_ID_GREEN>;
+				function-enumerator = <4>;
 				gpios = <&tlmm 19 GPIO_ACTIVE_HIGH>;
 				default-state = "off";
 			};
