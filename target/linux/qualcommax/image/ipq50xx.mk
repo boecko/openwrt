@@ -52,31 +52,26 @@ endef
 TARGET_DEVICES += elecom_wrc-x3000gs2
 
 define Device/glinet_gl-x2000
-	$(call Device/FactoryImage)
-	$(call Device/FitImage)
-	$(call Device/UbiFit)
+    $(call Device/FitImage)
 	DEVICE_VENDOR := GL.iNET
 	DEVICE_MODEL := GL-X2000
-	KERNEL_LOADADDR := 0x41080000
-	KERNEL_SIZE := 8192k
-	IMAGE_SIZE := 83968k
 	NAND_SIZE := 256m
 	BLOCKSIZE := 128k
 	PAGESIZE := 2048
 	SOC := ipq5018
-	UBINIZE_OPTS := -E 5	# EOD marks to "hide" factory sig at EOF
+	KERNEL_IN_UBI := 1
 	DEVICE_DTS_CONFIG:=config@mp03.5-c1
-	SUPPORTED_DEVICES:=x2000, glinet,gl-x2000
+	SUPPORTED_DEVICES +=x2000
 	BOOT_SCRIPT:= glinet_gl-x2000.bootscript
-	IMAGES := sysupgrade.tar nand-factory.img factory.ubi
-	IMAGE/sysupgrade.tar := sysupgrade-tar | append-metadata
-	IMAGE/nand-factory.img := append-ubi | qsdk-ipq-factory-nand | append-metadata
-	IMAGE/factory.ubi := append-ubi
+    IMAGES := factory.img sysupgrade.bin
+	IMAGE/factory.img := append-ubi | gl-qsdk-factory | append-metadata
 	DEVICE_PACKAGES := \
 	ath11k-firmware-qcn6122 \
 	ipq-wifi-glinet_gl-x2000 \
 	kmod-bluetooth \
-	ipq5018-maple-bt-firmware
+	ipq5018-maple-bt-firmware \
+	kmod-hwmon-pwmfan \
+	dumpimage
 endef
 TARGET_DEVICES += glinet_gl-x2000
 
