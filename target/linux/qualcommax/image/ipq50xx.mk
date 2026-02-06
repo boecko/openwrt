@@ -67,7 +67,8 @@ define Device/glinet_gl-x2000
 	UBINIZE_OPTS := -E 5	# EOD marks to "hide" factory sig at EOF
 	DEVICE_DTS_CONFIG:=config@mp03.5-c1
 	SUPPORTED_DEVICES:=x2000, glinet,gl-x2000
-	IMAGES := sysupgrade.tar nand-factory.img factory.ubi 
+	BOOT_SCRIPT:= glinet_gl-x2000.bootscript
+	IMAGES := sysupgrade.tar nand-factory.img factory.ubi
 	IMAGE/sysupgrade.tar := sysupgrade-tar | append-metadata
 	IMAGE/nand-factory.img := append-ubi | qsdk-ipq-factory-nand | append-metadata
 	IMAGE/factory.ubi := append-ubi
