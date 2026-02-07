@@ -71,6 +71,7 @@ define Device/glinet_gl-x2000
 	kmod-bluetooth \
 	ipq5018-maple-bt-firmware \
 	kmod-hwmon-pwmfan \
+	kmod-thermal \
 	dumpimage
 endef
 TARGET_DEVICES += glinet_gl-x2000
