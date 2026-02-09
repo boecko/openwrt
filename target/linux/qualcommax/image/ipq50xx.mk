@@ -69,7 +69,6 @@ define Device/glinet_gl-x2000
 	ath11k-firmware-qcn6122 \
 	ipq-wifi-glinet_gl-x2000 \
 	kmod-bluetooth \
-	ipq5018-maple-bt-firmware \
 	kmod-hwmon-pwmfan \
 	kmod-thermal \
 	dumpimage
