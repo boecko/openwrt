@@ -66,7 +66,7 @@ define Device/glinet_gl-x2000
     IMAGES := factory.img sysupgrade.bin
 	IMAGE/factory.img := append-ubi | gl-qsdk-factory | append-metadata
 	DEVICE_PACKAGES := \
-	ath11k-firmware-qcn6122 \
+    ath11k-firmware-ipq5018-qcn6122 \
 	ipq-wifi-glinet_gl-x2000 \
 	kmod-bluetooth \
 	kmod-hwmon-pwmfan \

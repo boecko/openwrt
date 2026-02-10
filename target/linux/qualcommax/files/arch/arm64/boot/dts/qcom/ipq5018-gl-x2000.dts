@@ -265,7 +265,8 @@
 };
 
 &xo_board_clk {
-	clock-frequency = <24000000>;
+	clock-div = <4>;
+	clock-mult = <1>;
 };
 
 &blsp1_uart1 {
@@ -522,10 +523,6 @@
 	};
 };
 
-&tsens {
-	status = "okay";
-};
-
 &usb {
 	qcom,select-utmi-as-pipe-clk;
 	status = "okay";
@@ -543,14 +540,6 @@
     pinctrl-0 = <&pwm_pins>;
     pinctrl-names = "default";
     status = "okay";
-};
-
-&q6v5_wcss {
-	status = "okay";
-
-	firmware-name = "ath11k/IPQ5018/hw1.0/q6_fw.mdt",
-					"ath11k/IPQ5018/hw1.0/m3_fw.mdt",
-					"ath11k/QCN6122/hw1.0/m3_fw.mdt";
 };
 
 &wifi {
