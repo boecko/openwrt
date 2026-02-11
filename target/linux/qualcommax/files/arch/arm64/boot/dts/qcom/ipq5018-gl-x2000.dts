@@ -9,8 +9,8 @@
 #include <dt-bindings/leds/common.h>
 
 / {
-	model = "GL.iNet X2000, Inc. IPQ5018/AP-MP03.5-C1";
-	compatible = "glinet,gl-x2000", "qcom,ipq5018-ap-mp03.5-c1", "qcom,ipq5018-mp03.5", "qcom,ipq5018";
+	model = "GL.iNet GL-X2000";
+	compatible = "glinet,gl-x2000", "qcom,ipq5018";
 
 	aliases {
 		serial0 = &blsp1_uart1;
@@ -28,85 +28,6 @@
 		bootargs-append = " root=/dev/ubiblock0_2 swiotlb=1 coherent_pool=2M";
 		stdout-path = "serial0:115200n8";
 	};
-
-
-	leds {
-		compatible = "gpio-leds";
-		pinctrl-0 = <&leds_pins>;
-		pinctrl-names = "default";
-
-        	led_system_power: led_system_power {
-				function = LED_FUNCTION_POWER;
-				color = <LED_COLOR_ID_GREEN>;
-				gpios = <&tlmm 28 GPIO_ACTIVE_HIGH>;
-				default-state = "on";
-        	};
-
-        	led_status_internet: led_status_internet {
-				function = LED_FUNCTION_STATUS;
-				color = <LED_COLOR_ID_GREEN>;
-				gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-        	};
-
-			led_wifi_2g {
-				function = LED_FUNCTION_WLAN_2GHZ;
-				color = <LED_COLOR_ID_GREEN>;
-				function-enumerator = <2>;
-				gpios = <&tlmm 1 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-			};
-
-			led_wifi_5g {
-				function = LED_FUNCTION_WLAN_5GHZ;
-				color = <LED_COLOR_ID_GREEN>;
-				function-enumerator = <5>;
-				gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-			};
-
-			led_5g_signal1 {
-				function = LED_FUNCTION_INDICATOR;
-				color = <LED_COLOR_ID_GREEN>;
-				function-enumerator = <1>;
-				gpios = <&tlmm 44 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-			};
-
-			led_5g_signal2 {
-				function = LED_FUNCTION_INDICATOR;
-				color = <LED_COLOR_ID_GREEN>;
-				function-enumerator = <2>;
-				gpios = <&tlmm 24 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-			};
-
-			led_5g_signal3 {
-				function = LED_FUNCTION_INDICATOR;
-				color = <LED_COLOR_ID_GREEN>;
-				function-enumerator = <3>;
-				gpios = <&tlmm 17 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-			};
-
-			led_5g_signal4 {
-				function = LED_FUNCTION_INDICATOR;
-				color = <LED_COLOR_ID_GREEN>;
-				function-enumerator = <4>;
-				gpios = <&tlmm 19 GPIO_ACTIVE_HIGH>;
-				default-state = "off";
-			};
-	};
-
-    regulator_fixed_5p0: regulator-s0500 {
-		compatible = "regulator-fixed";
-		regulator-min-microvolt = <500000>;
-		regulator-max-microvolt = <500000>;
-		regulator-name = "regulator_fixed_5p0";
-		gpio = <&tlmm 34 GPIO_ACTIVE_LOW>;
-		enable-active-high;
-        regulator-boot-on;
-	};
     
 	fan: pwm-fan {
 		compatible = "pwm-fan";
@@ -120,46 +41,73 @@
 		pwms = <&pwm 3 40000 0>;
 	};
 
-    thermal-zones {
-        cpu-thermal {
-            trips {
-                cpu_trip_high: active-high {
-                    temperature = <100000>;
-                    hysteresis = <2000>;
-                    type = "active";
-                };
+	leds {
+		compatible = "gpio-leds";
+		pinctrl-0 = <&leds_pins>;
+		pinctrl-names = "default";
 
-                cpu_trip_med: active-med {
-                    temperature = <75000>;
-                    hysteresis = <2000>;
-                    type = "active";
-                };
+		led_system_power: led_system_power {
+			function = LED_FUNCTION_POWER;
+			color = <LED_COLOR_ID_GREEN>;
+			gpios = <&tlmm 28 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+		};
 
-                cpu_trip_low: active-low {
-                    temperature = <50000>;
-                    hysteresis = <2000>;
-                    type = "active";
-                };
-            };
+		led_status_internet: led_status_internet {
+			function = LED_FUNCTION_STATUS;
+			color = <LED_COLOR_ID_GREEN>;
+			gpios = <&tlmm 32 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
 
-            cooling-maps {
-                cpu-active-high {
-                    cooling-device = <&fan 3 3>;
-                    trip = <&cpu_trip_high>;
-                };
+		led_wifi_2g {
+			function = LED_FUNCTION_WLAN_2GHZ;
+			color = <LED_COLOR_ID_GREEN>;
+			function-enumerator = <2>;
+			gpios = <&tlmm 1 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
 
-                cpu-active-med {
-                    cooling-device = <&fan 2 2>;
-                    trip = <&cpu_trip_med>;
-                };
+		led_wifi_5g {
+			function = LED_FUNCTION_WLAN_5GHZ;
+			color = <LED_COLOR_ID_GREEN>;
+			function-enumerator = <5>;
+			gpios = <&tlmm 31 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
 
-                cpu-active-low {
-                    cooling-device = <&fan 1 1>;
-                    trip = <&cpu_trip_low>;
-                };
-            };
-        };
-    };
+		led_5g_signal1 {
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_GREEN>;
+			function-enumerator = <1>;
+			gpios = <&tlmm 44 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_5g_signal2 {
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_GREEN>;
+			function-enumerator = <2>;
+			gpios = <&tlmm 24 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_5g_signal3 {
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_GREEN>;
+			function-enumerator = <3>;
+			gpios = <&tlmm 17 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+
+		led_5g_signal4 {
+			function = LED_FUNCTION_INDICATOR;
+			color = <LED_COLOR_ID_GREEN>;
+			function-enumerator = <4>;
+			gpios = <&tlmm 19 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
+		};
+	};
 
 	keys {
 		compatible = "gpio-keys";
@@ -169,13 +117,48 @@
 		button_reset {
 			label = "reset";
 			gpios = <&tlmm 27 GPIO_ACTIVE_LOW>;
-			linux,input-type = <EV_KEY>;//<1>;
+			linux,input-type = <EV_KEY>;
 			linux,code = <KEY_RESTART>;
 			debounce-interval = <60>;
 		};
 	};
 
+	regulator_fixed_5p0: regulator-s0500 {
+		compatible = "regulator-fixed";
+		regulator-min-microvolt = <500000>;
+		regulator-max-microvolt = <500000>;
+		regulator-name = "regulator_fixed_5p0";
+		gpio = <&tlmm 34 GPIO_ACTIVE_LOW>;
+		enable-active-high;
+		regulator-boot-on;
+	};
+
+	usb_vreg_5p0: usb-vreg-5p0 {
+		compatible = "regulator-fixed";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		regulator-name = "vbus_reg";
+		gpios = <&tlmm 30 GPIO_ACTIVE_LOW>;
+	};
 };
+
+/*
+* =================================================================
+*     _______________________             ____________
+*    |        IPQ5018        |           |            |
+*    | +------+   +--------+ |           | +--------+ |
+*    | | MAC0 |---| GE Phy |-+--- MDI ---+ | RJ45   | +
+*    | +------+   +--------+ |           | +--------+ |
+*    |                       |           |____________|
+*    |                       |            _______________________
+*    |                       |           |       Unknown Phy     |
+*    | +------+   +--------+ |           | +--------+   +------+ |
+*    | | MAC1 |---| Uniphy |-+-- SGMII---+ | Phy    |---| RJ45 | |
+*    | +------+   +--------+ |           | +--------+   +------+ |
+*    |_______________________|           |_______________________|
+*
+* =================================================================
+ */
 
 &switch {
 	status = "okay";
@@ -183,63 +166,40 @@
 	switch_mac_mode = <MAC_MODE_SGMII_CHANNEL0>;
 
 	qcom,port_phyinfo {
-		// MAC0 -> GE Phy -> QCA8337 Phy2
-		port@0 {
+		// MAC0 -> GE Phy -> MDI --> RJ45
+		port@1 {
 			port_id = <1>;
 			mdiobus = <&mdio0>;
 			phy_address = <7>;
-			phy_dac = <0x10 0x10>;
-			// status = "disabled";
 		};
 
-		// MAC1 ---SGMII---> QCA8337 SerDes
-		port@1 {
+		// MAC1 ---SGMII---> Unknown PHY -> RJ45
+		port@2 {
 			port_id = <2>;
 			mdiobus = <&mdio1>;
-			forced-speed = <1000>;
-			forced-duplex = <1>;
 			phy_address = <4>;
 		};
 	};
 };
 
-// MAC0 -> GE Phy
+// MAC0 ---MDI---> IPQ5018 GE PHY
 &dp1 {
-	/*
-	 * ===============================================================
-	 *     _______________________         _______________________
-	 *    |        IPQ5018        |       |        QCA8337        |
-	 *    | +------+   +--------+ |       | +--------+   +------+ |
-	 *    | | MAC0 |---| GE Phy |-+--UTP--+-|  Phy4  |---| MAC5 | |
-	 *    | +------+   +--------+ |       | +--------+   +------+ |
-	 *    | +------+   +--------+ |       | +--------+   +------+ |
-	 *    | | MAC1 |---| Uniphy |-+-SGMII-+-| SerDes |---| MAC0 | |
-	 *    | +------+   +--------+ |       | +--------+   +------+ |
-	 *    |_______________________|       |_______________________|
-	 *
-	 * ===============================================================
-	 *
-	 * Current drivers don't support such topology. So dp1 and ge_phy
-	 * are useless. But they can't be disabled due to qca-ssdk use
-	 * ge_phy to detect IPQ5018 dummy switch.
-	 */
-	
 	status = "okay";
+
+	label = "wan";
+	phy-handle = <&ge_phy>;
+	nvmem-cells = <&macaddr_dp2>;
+	nvmem-cell-names = "mac-address";
 };
 
-
-// MAC1 ---SGMII---> QCA8337 SerDes
+// MAC1 ---SGMII---> Ethernet Phy
 &dp2 {
 	status = "okay";
 
-	phy-mode = "sgmii";
-	nvmem-cells = <&macaddr_dp2 0>;
+	label = "lan";
+	phy-handle = <&ethernet_phy>;
+	nvmem-cells = <&macaddr_dp2 1>;
 	nvmem-cell-names = "mac-address";
-	
-	fixed-link {
-		speed = <1000>;
-		full-duplex;
-	};
 };
 
 &mdio0 {
@@ -253,11 +213,11 @@
 	pinctrl-names = "default";
 	reset-gpios = <&tlmm 39 GPIO_ACTIVE_LOW>;
 
-	// QCA8337 Phy0 -> WAN
-	ethernet-phy@0 {
+	// Ethernet PHY
+	ethernet_phy: ethernet-phy@4 {
+		compatible = "ethernet-phy-ieee802.3-c22";
 		reg = <4>;
 	};
-
 };
 
 &sleep_clk {
@@ -270,7 +230,7 @@
 };
 
 &blsp1_uart1 {
-	status = "okay";
+ 	status = "okay";
 
 	pinctrl-0 = <&blsp_uart0_pins>;
 	pinctrl-names = "default";
@@ -331,56 +291,23 @@
 };
 
 &tlmm {
-	mdio1_pins: mdio-state {
-		mdc-pins {
-			pins = "gpio36";
-			function = "mdc";
+	blsp0_spi_pins: blsp0_spi_pins {
+		pins = "gpio10", "gpio11";
+		function = "blsp0_spi";
+		drive-strength = <2>;
+		bias-disable;
+	};
+
+	button_pins: button_pins {
+		button_reset {
+			pins = "gpio27";
+			function = "gpio";
 			drive-strength = <8>;
 			bias-pull-up;
 		};
-
-		mdio-pins {
-			pins = "gpio37";
-			function = "mdio";
-			drive-strength = <8>;
-			bias-pull-up;
-		};
 	};
 
-    pwm_pins: pwm_pinmux {
-		mux {
-			pins = "gpio13";
-			function = "pwm3";
-			drive-strength = <8>;
-		};
-	};
-
-    fan_pins: fan_pins {
-		pwr {
-			pins = "gpio34";
-			function = "gpio";
-			output-high;
-		};
-
-		speed {
-			pins = "gpio26";
-			function = "gpio";
-			drive-strength = <8>;
-			bias-disable;
-		};
-	};
-
-	usbhub_pins: usbhub_pins {
-		hub_reset {
-			pins = "gpio33";
-			function = "gpio";
-			drive-strength = <8>;
-			bias-disable;
-			output-high;
-		};
-	};
-
-    cellular_pins: cellular_pins {
+	cellular_pins: cellular_pins {
 		cellular_en {
 			pins = "gpio12";
 			function = "gpio";
@@ -403,6 +330,21 @@
 			drive-strength = <8>;
 			bias-disable;
 			output-low;
+		};
+	};
+
+	fan_pins: fan_pins {
+		pwr {
+			pins = "gpio34";
+			function = "gpio";
+			output-high;
+		};
+
+		speed {
+			pins = "gpio26";
+			function = "gpio";
+			drive-strength = <8>;
+			bias-disable;
 		};
 	};
 	
@@ -464,12 +406,27 @@
 		};
 	};
 
-	button_pins: button_pins {
-		button_reset {
-			pins = "gpio27";
-			function = "gpio";
+	mdio1_pins: mdio-state {
+		mdc-pins {
+			pins = "gpio36";
+			function = "mdc";
 			drive-strength = <8>;
 			bias-pull-up;
+		};
+
+		mdio-pins {
+			pins = "gpio37";
+			function = "mdio";
+			drive-strength = <8>;
+			bias-pull-up;
+		};
+	};
+
+	pwm_pins: pwm_pinmux {
+		mux {
+			pins = "gpio13";
+			function = "gpio";
+			drive-strength = <8>;
 		};
 	};
 	
@@ -496,44 +453,47 @@
 		};
 	};
 
-	blsp_uart0_pins: blsp_uart0_pins {
-		pins =
-			"gpio20", // RX
-			"gpio21"; // TX
+    blsp_uart0_pins: blsp_uart0_pins {
+	    pins =
+	    "gpio20", // RX
+	    "gpio21"; // TX
+	    function = "blsp0_uart0";
+	    drive-strength = <8>;
+	    bias-disable;
+    };
+
+	serial_0_pins: uart0-state {
+		pins = "gpio20", "gpio21";
 		function = "blsp0_uart0";
-		drive-strength = <8>;
 		bias-disable;
 	};
 
-    	blsp1_uart_pins: blsp1_uart_pins {
-		blsp1_uart_rx_tx {
-			pins = "gpio23", "gpio25";
-			function = "blsp1_uart2";
+	usbhub_pins: usbhub_pins {
+		hub_reset {
+			pins = "gpio33";
+			function = "gpio";
+			drive-strength = <8>;
 			bias-disable;
-		};
-	};
-
-	blsp0_spi_pins: blsp0_spi_pins {
-		mux {
-			pins = "gpio10", "gpio11";
-			function = "blsp0_spi";
-			drive-strength = <2>;
-			bias-disable;
+			output-high;
 		};
 	};
 };
 
 &usb {
-	qcom,select-utmi-as-pipe-clk;
 	status = "okay";
+
+	vbus-supply = <&usb_vreg_5p0>;
+	qcom,select-utmi-as-pipe-clk;
 };
 
 &usb_dwc {
-	status = "okay";
+	dr_mode = "host";
 };
 
 &usbphy0 {
 	status = "okay";
+
+	vdd-supply = <&usb_vreg_5p0>;
 };
 
 &pwm {
@@ -543,32 +503,21 @@
 };
 
 &wifi {
-	// IPQ5018
-	qcom,rproc = <&q6_wcss_pd1>;
-	qcom,userpd-subsys-name = "q6v5_wcss_userpd1";
-
-	// Can be overridden by /etc/hotplug.d/firmware/10-ath11k-board_id
-	//qcom,board_id = <0x24>;
-
-	qcom,ath11k-calibration-variant = "GL-iNet-GL-X2000";
-	qcom,ath11k-fw-memory-mode = <2>;
-	qcom,bdf-addr = <0x4c400000>;
-
 	status = "okay";
+
+	qcom,rproc = <&q6_wcss_pd1>;
+	qcom,ath11k-calibration-variant = "GL-iNet-GL-X2000";
+	qcom,ath11k-fw-memory-mode = <1>;
+	qcom,bdf-addr = <0x4c400000>;
 };
 
 &wifi1 {
-	// QCN6102 5G
+	status = "okay";
+	
 	qcom,rproc = <&q6_wcss_pd3>;
 	qcom,userpd-subsys-name = "q6v5_wcss_userpd3";
-
-	// Can be overridden by /etc/hotplug.d/firmware/10-ath11k-board_id
-	//qcom,board_id = <0x60>;
-
 	qcom,ath11k-calibration-variant = "GL-iNet-GL-X2000";
-	qcom,ath11k-fw-memory-mode = <2>;
+	qcom,ath11k-fw-memory-mode = <1>;
 	qcom,bdf-addr = <0x4d100000>;
 	qcom,m3-dump-addr = <0x4df00000>;
-
-	status = "okay";
 };
